@@ -29,7 +29,7 @@ USING_NS_CC;
 
 Scene* MainScene::createScene()
 {
-    return MainScene::create();
+  return MainScene::create();
 }
 
 // on "init" you need to initialize your instance
@@ -39,7 +39,7 @@ bool MainScene::init()
   InitBackground();
   InitHealthBar();
   InitScoreLabel();
-  InitKeyboard();
+  InitKeyboardListener();
   
   this->scheduleUpdate();
 
@@ -99,24 +99,15 @@ void MainScene::InitScoreLabel()
   this->addChild(scoreLabel);
 }
 
-void MainScene::InitKeyboard()
+void MainScene::InitKeyboardListener()
 {
-  auto listener = EventListenerKeyboard::create();
-
-  listener->onKeyPressed = [&](cocos2d::EventKeyboard::KeyCode keycode, Event* event) {
-    keyboard[keycode] = true;
-  };
-
-  listener->onKeyReleased = [&](cocos2d::EventKeyboard::KeyCode keycode, Event* event) {
-    keyboard.erase(keycode);
-  };
-
-  Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
+  keyboardListener = new KeyboardListener();
+  Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(keyboardListener->GetListener(), this);
 }
 
 void MainScene::MoveHero(float delta)
 {
-  int direction = GetMoveDirection();
+  int direction = keyboardListener->GetMoveDirection();
 
   auto direction2D = Vec2(0, 0);
   float X = hero->getPositionX();
@@ -149,27 +140,8 @@ void MainScene::MoveHero(float delta)
     Y -= speed;
     break;
   }
-    
+
   auto moveBy = MoveBy::create(delta, direction2D);
   hero->runAction(moveBy);
 }
 
-int MainScene::GetMoveDirection()
-{
-  for (auto keyPressed : keyboard)
-  {
-     auto keyCode = keyPressed.first;
-
-     switch (keyCode) {
-     case EventKeyboard::KeyCode::KEY_A:
-       return LEFT;
-     case EventKeyboard::KeyCode::KEY_D:
-       return RIGHT;
-     case EventKeyboard::KeyCode::KEY_W:
-       return UP;
-     case EventKeyboard::KeyCode::KEY_S:
-       return DOWN;
-     }
-  }
-  return NODIRECTION;
-}

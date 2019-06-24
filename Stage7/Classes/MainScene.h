@@ -26,6 +26,7 @@
 #define __HELLOWORLD_SCENE_H__
 
 #include "Includes.h"
+#include "KeyboardListener.h"
 
 class MainScene : public cocos2d::Scene
 {
@@ -45,18 +46,17 @@ private:
   void InitBackground();
   void InitHealthBar();
   void InitScoreLabel();
-  void InitKeyboard();
+  void InitKeyboardListener();
 
   void MoveHero(float delta);
-  int GetMoveDirection();
+
+  KeyboardListener* keyboardListener;
 
   cocos2d::Sprite* hero;
   cocos2d::Sprite* healthBar;
   cocos2d::Label* scoreLabel;
 
   int speed = 10;
-
-  map<EventKeyboard::KeyCode, bool> keyboard;
 
 };
 
