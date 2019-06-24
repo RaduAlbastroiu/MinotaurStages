@@ -2,23 +2,34 @@
 //
 
 #include <iostream>
+#include <memory>
+using namespace std;
 
-class Animal 
+
+class MyClass
 {
 public:
-  void eat() { std::cout << "  eating  \n"; }
-};
-
-class Dog : public Animal 
-{
-public:
-  void bark() { std::cout << "  barking  \n"; }
+  int data = 0;
+  
+  void IncrementData() 
+  {
+    data++;
+  }
 };
 
 int main()
 {
-  auto dog = Dog();
+  MyClass* ptr = new MyClass();
+  ptr->IncrementData();
 
-  dog.eat();
-  dog.bark();
+  //  We must do delete(ptr) to avoid memory leak 
+  delete ptr;
+
+  unique_ptr<MyClass> smartPtr = make_unique<MyClass>();
+  smartPtr->IncrementData();
+
+  // No need to delete smartPtr
+
+  return 0;
 }
+

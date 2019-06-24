@@ -35,8 +35,44 @@ Scene* MainScene::createScene()
 // on "init" you need to initialize your instance
 bool MainScene::init()
 {
+  // ini hero
+  cocos2d::Sprite* hero = Sprite::create("MinotaurFirst.png");
+
+  auto X = Director::getInstance()->getVisibleSize().width / 2;
+  auto Y = Director::getInstance()->getVisibleSize().height / 2;
+
+  hero->setPosition(Vec2(X, Y));
+  hero->setScale(3);
+  hero->setAnchorPoint(Vec2(0.5, 0.5));
+
+  this->addChild(hero, 100);
 
 
+  // init background
+  for (int i = 0; i <= Director::getInstance()->getVisibleSize().width / 1024; i++)
+  {
+    for (int j = 0; j <= Director::getInstance()->getVisibleSize().height / 1024; j++)
+    {
+      cocos2d::Sprite* background = Sprite::create("grass.png");
+      background->setAnchorPoint(Vec2(0, 0));
+      background->setPosition(Vec2(1024 * i, 1024 * j));
+      this->addChild(background, 0);
+    }
+  }
+
+
+  // init health bar
+  cocos2d::Sprite* healthBar = cocos2d::Sprite::create("LifeBar/100.png");
+  healthBar->setScale(0.4f);
+  healthBar->setPosition(Director::getInstance()->getVisibleSize().width / 9, Director::getInstance()->getVisibleSize().height / 1.07);
+  this->addChild(healthBar);
+
+
+  // init score label
+  cocos2d::Label* scoreLabel = Label::createWithSystemFont("Killed: 0", "Arial", 50);
+  scoreLabel->setPosition(Director::getInstance()->getVisibleSize().width / 10 * 9, Director::getInstance()->getVisibleSize().height / 1.07);
+  scoreLabel->setTextColor(cocos2d::Color4B::BLACK);
+  this->addChild(scoreLabel);
 
   return true;
 }
