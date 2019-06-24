@@ -35,14 +35,10 @@ Scene* MainScene::createScene()
 // on "init" you need to initialize your instance
 bool MainScene::init()
 {
-  /*
   InitHero();
   InitBackground();
   InitHealthBar();
   InitScoreLabel();
-  */
-
-  InitPressedLabel();
   InitKeyboard();
   
   this->scheduleUpdate();
@@ -52,14 +48,7 @@ bool MainScene::init()
 
 void MainScene::update(float delta)
 {
-  if (keyboard.find(EventKeyboard::KeyCode::KEY_SPACE) != keyboard.end())
-  {
-    pressedLabel->setString("Space key pressed");
-  }
-  else
-  {
-    pressedLabel->setString("Press the Space key");
-  }
+  MoveHero(delta);
 }
 
 void MainScene::InitHero()
@@ -125,11 +114,62 @@ void MainScene::InitKeyboard()
   Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
 }
 
-void MainScene::InitPressedLabel()
+void MainScene::MoveHero(float delta)
 {
-  // init score label
-  pressedLabel = Label::createWithSystemFont("Press the Space key", "Arial", 50);
-  pressedLabel->setPosition(Director::getInstance()->getVisibleSize().width / 2, Director::getInstance()->getVisibleSize().height / 2);
-  pressedLabel->setTextColor(cocos2d::Color4B::WHITE);
-  this->addChild(pressedLabel);
+  int direction = GetMoveDirection();
+
+  auto direction2D = Vec2(0, 0);
+  float X = hero->getPositionX();
+  float Y = hero->getPositionY();
+
+  if (direction == LEFT)
+    hero->setFlippedX(true);
+  if (direction == RIGHT)
+    hero->setFlippedX(false);
+
+  switch (direction)
+  {
+  case LEFT:
+    direction2D = Vec2(-1 * speed, 0);
+    X += -1 * speed;
+    break;
+
+  case RIGHT:
+    direction2D = Vec2(1 * speed, 0);
+    X += speed;
+    break;
+
+  case UP:
+    direction2D = Vec2(0, 1 * speed);
+    Y += speed;
+    break;
+
+  case DOWN:
+    direction2D = Vec2(0, -1 * speed);
+    Y -= speed;
+    break;
+  }
+    
+  auto moveBy = MoveBy::create(delta, direction2D);
+  hero->runAction(moveBy);
+}
+
+int MainScene::GetMoveDirection()
+{
+  for (auto keyPressed : keyboard)
+  {
+     auto keyCode = keyPressed.first;
+
+     switch (keyCode) {
+     case EventKeyboard::KeyCode::KEY_A:
+       return LEFT;
+     case EventKeyboard::KeyCode::KEY_D:
+       return RIGHT;
+     case EventKeyboard::KeyCode::KEY_W:
+       return UP;
+     case EventKeyboard::KeyCode::KEY_S:
+       return DOWN;
+     }
+  }
+  return NODIRECTION;
 }

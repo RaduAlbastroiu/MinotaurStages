@@ -33,3 +33,8 @@ int main()
   return 0;
 }
 
+[ capture ] (parameters) -> return type
+{
+  // logic goes here
+}
+

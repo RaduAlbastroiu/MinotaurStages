@@ -46,12 +46,15 @@ private:
   void InitHealthBar();
   void InitScoreLabel();
   void InitKeyboard();
-  void InitPressedLabel();
+
+  void MoveHero(float delta);
+  int GetMoveDirection();
 
   cocos2d::Sprite* hero;
   cocos2d::Sprite* healthBar;
   cocos2d::Label* scoreLabel;
-  cocos2d::Label* pressedLabel;
+
+  int speed = 10;
 
   map<EventKeyboard::KeyCode, bool> keyboard;
 
