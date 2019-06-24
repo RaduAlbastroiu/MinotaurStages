@@ -25,8 +25,7 @@
 #ifndef __HELLOWORLD_SCENE_H__
 #define __HELLOWORLD_SCENE_H__
 
-#include "cocos2d.h"
-#include <iostream>
+#include "Includes.h"
 
 class MainScene : public cocos2d::Scene
 {
@@ -46,10 +45,15 @@ private:
   void InitBackground();
   void InitHealthBar();
   void InitScoreLabel();
+  void InitKeyboard();
+  void InitPressedLabel();
 
   cocos2d::Sprite* hero;
   cocos2d::Sprite* healthBar;
   cocos2d::Label* scoreLabel;
+  cocos2d::Label* pressedLabel;
+
+  map<EventKeyboard::KeyCode, bool> keyboard;
 
 };
 

@@ -35,11 +35,16 @@ Scene* MainScene::createScene()
 // on "init" you need to initialize your instance
 bool MainScene::init()
 {
+  /*
   InitHero();
   InitBackground();
   InitHealthBar();
   InitScoreLabel();
+  */
 
+  InitPressedLabel();
+  InitKeyboard();
+  
   this->scheduleUpdate();
 
   return true;
@@ -47,13 +52,14 @@ bool MainScene::init()
 
 void MainScene::update(float delta)
 {
-  auto position = hero->getPosition();
-  position.x += 10;
-
-  if (position.x > Director::getInstance()->getVisibleSize().width + 30)
-    position.x = -30;
-
-  hero->setPosition(position);
+  if (keyboard.find(EventKeyboard::KeyCode::KEY_SPACE) != keyboard.end())
+  {
+    pressedLabel->setString("Space key pressed");
+  }
+  else
+  {
+    pressedLabel->setString("Press the Space key");
+  }
 }
 
 void MainScene::InitHero()
@@ -93,7 +99,6 @@ void MainScene::InitHealthBar()
   healthBar->setScale(0.4f);
   healthBar->setPosition(Director::getInstance()->getVisibleSize().width / 9, Director::getInstance()->getVisibleSize().height / 1.07);
   this->addChild(healthBar);
-
 }
 
 void MainScene::InitScoreLabel()
@@ -103,4 +108,28 @@ void MainScene::InitScoreLabel()
   scoreLabel->setPosition(Director::getInstance()->getVisibleSize().width / 10 * 9, Director::getInstance()->getVisibleSize().height / 1.07);
   scoreLabel->setTextColor(cocos2d::Color4B::BLACK);
   this->addChild(scoreLabel);
+}
+
+void MainScene::InitKeyboard()
+{
+  auto listener = EventListenerKeyboard::create();
+
+  listener->onKeyPressed = [&](cocos2d::EventKeyboard::KeyCode keycode, Event* event) {
+    keyboard[keycode] = true;
+  };
+
+  listener->onKeyReleased = [&](cocos2d::EventKeyboard::KeyCode keycode, Event* event) {
+    keyboard.erase(keycode);
+  };
+
+  Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
+}
+
+void MainScene::InitPressedLabel()
+{
+  // init score label
+  pressedLabel = Label::createWithSystemFont("Press the Space key", "Arial", 50);
+  pressedLabel->setPosition(Director::getInstance()->getVisibleSize().width / 2, Director::getInstance()->getVisibleSize().height / 2);
+  pressedLabel->setTextColor(cocos2d::Color4B::WHITE);
+  this->addChild(pressedLabel);
 }
