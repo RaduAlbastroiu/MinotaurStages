@@ -1,10 +1,11 @@
 
 #include "Hero.h"
 
-Hero::Hero(KeyboardListener* aKeyboardListener, HealthBar* aHealthBar)
+Hero::Hero(KeyboardListener* aKeyboardListener, HealthBar* aHealthBar, KeyControls aKeyControls)
 {
   keyboardListener = aKeyboardListener;
   healthBar = aHealthBar;
+  keyControls = aKeyControls;
 
   // init hero
   hero = Sprite::create("MinotaurFirst.png");
@@ -24,7 +25,7 @@ Sprite* Hero::GetSprite()
 
 void Hero::Move(float delta)
 {
-  int direction = keyboardListener->GetMoveDirection();
+  int direction = GetMoveDirection();
 
   auto direction2D = Vec2(0, 0);
   float X = hero->getPositionX();
@@ -68,6 +69,23 @@ void Hero::TakeDamage(int damage)
   health = max(0, health);
 
   healthBar->UpdateHealth(health);
+}
+
+int Hero::GetMoveDirection()
+{
+  if (keyboardListener->IsKeyPressed(keyControls.LeftKey))
+    return LEFT;
+
+  if (keyboardListener->IsKeyPressed(keyControls.RightKey))
+    return RIGHT;
+
+  if (keyboardListener->IsKeyPressed(keyControls.UpKey))
+    return UP;
+
+  if (keyboardListener->IsKeyPressed(keyControls.DownKey))
+    return DOWN;
+
+  return NODIRECTION;
 }
 
 void Hero::Update(float delta)

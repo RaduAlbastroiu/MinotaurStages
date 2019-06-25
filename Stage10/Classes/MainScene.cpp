@@ -53,7 +53,7 @@ void MainScene::update(float delta)
 
 void MainScene::InitHero()
 {
-  hero = new Hero(keyboardListener, healthBar);
+  hero = new Hero(keyboardListener, healthBar, KeyControlProfile::WASD());
   this->addChild(hero->GetSprite(), 100);
 }
 
