@@ -53,7 +53,7 @@ void MainScene::update(float delta)
 
 void MainScene::InitHero()
 {
-  hero = new Hero(keyboardListener);
+  hero = new Hero(keyboardListener, healthBar);
   this->addChild(hero->GetSprite(), 100);
 }
 
@@ -75,10 +75,8 @@ void MainScene::InitBackground()
 void MainScene::InitHealthBar()
 {
   // init health bar
-  healthBar = cocos2d::Sprite::create("LifeBar/100.png");
-  healthBar->setScale(0.4f);
-  healthBar->setPosition(Director::getInstance()->getVisibleSize().width / 9, Director::getInstance()->getVisibleSize().height / 1.07);
-  this->addChild(healthBar);
+  healthBar = new HealthBar();
+  this->addChild(healthBar->GetSprite());
 }
 
 void MainScene::InitScoreLabel()

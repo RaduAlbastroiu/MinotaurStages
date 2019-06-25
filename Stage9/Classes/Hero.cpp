@@ -1,9 +1,10 @@
 
 #include "Hero.h"
 
-Hero::Hero(KeyboardListener* aKeyboardListener)
+Hero::Hero(KeyboardListener* aKeyboardListener, HealthBar* aHealthBar)
 {
   keyboardListener = aKeyboardListener;
+  healthBar = aHealthBar;
 
   // init hero
   hero = Sprite::create("MinotaurFirst.png");
@@ -59,6 +60,14 @@ void Hero::Move(float delta)
 
   auto moveBy = MoveBy::create(delta, direction2D);
   hero->runAction(moveBy);
+}
+
+void Hero::TakeDamage(int damage)
+{
+  health -= damage;
+  health = max(0, health);
+
+  healthBar->UpdateHealth(health);
 }
 
 void Hero::Update(float delta)

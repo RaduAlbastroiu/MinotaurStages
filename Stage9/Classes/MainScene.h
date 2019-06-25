@@ -28,6 +28,7 @@
 #include "Includes.h"
 #include "KeyboardListener.h"
 #include "Hero.h"
+#include "HealthBar.h"
 
 class MainScene : public cocos2d::Scene
 {
@@ -51,8 +52,8 @@ private:
 
   KeyboardListener* keyboardListener;
   Hero* hero;
+  HealthBar* healthBar;
 
-  cocos2d::Sprite* healthBar;
   cocos2d::Label* scoreLabel;
 
   int speed = 10;
