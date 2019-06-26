@@ -14,7 +14,7 @@ public:
   void Move(float delta);
   void TakeDamage(int damage);
 
-  void Update(float delta);
+  void Update(float delta) override;
 
 private:
 
